@@ -1,0 +1,11 @@
+---
+ - name: fetch bundle gems
+   command: bundle install
+   become: vagrant
+   args:
+       chdir: /vagrant
+ - name: fetch puppet modules
+   shell: bundle exec "librarian-puppet install --verbose"
+   become: vagrant
+   args:
+       chdir: /vagrant

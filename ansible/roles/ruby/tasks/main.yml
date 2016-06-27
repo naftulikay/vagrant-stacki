@@ -1,0 +1,14 @@
+---
+ - name: install ruby
+   yum: name={{ item }} state=present
+   with_items:
+       - ruby
+       - ruby-irb
+       - ruby-devel
+       - rubygems
+       - rubygems-devel
+ - name: install ruby gems
+   gem: name={{ item }} state=present executable=/usr/bin/gem user_install=no
+   with_items:
+       - bundler
+       - rake

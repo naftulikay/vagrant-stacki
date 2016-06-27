@@ -1,0 +1,10 @@
+---
+ - name: install system devel packages
+   yum: name={{ item }} state=present
+   with_items:
+       - git
+       - gcc
+       - make
+       - vim
+       - unzip
+       - moreutils-parallel
