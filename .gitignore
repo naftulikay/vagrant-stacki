@@ -5,7 +5,5 @@ Gemfile.lock
 environments/*/.librarian
 environments/*/.tmp
 environments/*/Puppetfile.lock
-environments/*/modules
 
-modules
 vendor
