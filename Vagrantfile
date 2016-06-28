@@ -24,5 +24,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     devel.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/playbook.yml"
     end
+
+    # puppet to actually configure the hard stuff
+    devel.vm.provision "puppet" do |puppet|
+      puppet.environment_path  = "environments"
+      puppet.environment = "production"
+      puppet.options = ENV.fetch("PUPPET_ARGS", "")
+      puppet.working_directory = "/vagrant"
+      puppet.hiera_config_path = "hiera.yaml"
+    end
   end
 end

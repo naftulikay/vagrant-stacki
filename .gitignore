@@ -1,9 +1,11 @@
-.librarian
-.tmp
 .vagrant
 
 Gemfile.lock
-Puppetfile.lock
+
+environments/*/.librarian
+environments/*/.tmp
+environments/*/Puppetfile.lock
+environments/*/modules
 
 modules
 vendor

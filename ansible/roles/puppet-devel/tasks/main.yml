@@ -8,4 +8,4 @@
    shell: bundle exec "librarian-puppet install --verbose"
    become: vagrant
    args:
-       chdir: /vagrant
+       chdir: /vagrant/environments/production
