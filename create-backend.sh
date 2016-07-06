@@ -15,7 +15,9 @@ function usage() {
 function create_vm() {
     machine_id="$1"
     machine_name="stacki-backend-$machine_id"
-    machine_ram="2048"
+    machine_cpu="1"
+    machine_ram="4096" # these are not arbitrarily set
+    machine_disk="65536" # there is a reason
 
     # learn about the frontend
     frontend_uuid="$(cat .vagrant/machines/default/virtualbox/id)"
@@ -30,7 +32,7 @@ function create_vm() {
 
     # setup virtual hardware
     VBoxManage modifyvm "$machine_name" --ostype RedHat_64 --ioapic on --rtcuseutc on \
-        --boot1 net --boot2 disk --boot3 none \
+        --boot1 net --boot2 disk --boot3 none --cpus "$machine_cpu" --memory "$machine_ram" \
         --nic1 hostonly --nictype1 82540EM --hostonlyadapter1 $frontend_adapter
 
     # save machine's mac
@@ -44,13 +46,16 @@ function create_vm() {
 
     VBoxManage storagectl "$machine_name" --name SATA --add sata --controller IntelAhci \
         --portcount 1 --bootable on
-    VBoxManage createhd --filename "$vm_dirname/${machine_name}.vdi" --size 8192
+    VBoxManage createhd --filename "$vm_dirname/${machine_name}.vdi" --size $machine_disk
     VBoxManage storageattach "$machine_name" --storagectl SATA --port 0 --device 0 \
         --type hdd --medium "$vm_dirname/${machine_name}.vdi"
 
     # create hostfile.csv if it doesn't exist
     test -f hostfile.csv || \
         echo "Name,Appliance,Rack,Rank,IP,MAC,Interface,Network,Default" > hostfile.csv
+
+    # delete the previous host from the file
+    sed -i "/^$machine_name.*\$/d" hostfile.csv
 
     # append this host
     echo "Created new backend VM:"
