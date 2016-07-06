@@ -1,4 +1,0 @@
----
-dependencies:
-    - role: devel
-    - role: epel
