@@ -1,37 +1,20 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
+# stacki has some minimum requirements above what's provided by most vagrant boxes
+# this includes 2gb of ram, 64GB of disk, and a dedicated non-NAT nic
+# for details, see https://github.com/StackIQ/stacki/wiki/Frontend-Installation
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+Vagrant.configure(2) do |config|
+  config.vm.box = "rfkrocktk/stacki-3.2-7.x"
 
-  # CentOS 7 Development Machine
-  config.vm.define "default", autostart: true, primary: true do |devel|
-    devel.vm.box = "bento/centos-7.2"
+  # Add a nic for a backend install network
+  config.vm.network "private_network", ip: "10.168.42.101", :mac => "0800d00dc189"
 
-    # set the hostname
-    devel.vm.hostname = "vagrant-stacki"
-
-    # Create a private network, which allows host-only access to the machine using a specific IP.
-    devel.vm.network "private_network", type: "dhcp"
-
-    devel.vm.provider "virtualbox" do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "1024"]
-    end
-
-    # ansible provision to bootstrap the machine
-    devel.vm.provision "ansible" do |ansible|
-      ansible.playbook = "ansible/playbook.yml"
-    end
-
-    # puppet to actually configure the hard stuff
-    devel.vm.provision "puppet" do |puppet|
-      puppet.environment_path  = "environments"
-      puppet.environment = "production"
-      puppet.options = ENV.fetch("PUPPET_ARGS", "")
-      puppet.working_directory = "/vagrant"
-      puppet.hiera_config_path = "hiera.yaml"
-    end
+  config.vm.provider "virtualbox" do |vb|
+    # Customize the amount of memory on the VM:
+    vb.memory = "2048"
+    # give the VM a pretty name in VBox Manager
+    vb.name = "stacki-frontend-3.2-" + Time.new.strftime("%Y%m%d%H%M%S")
   end
 end
