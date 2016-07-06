@@ -1,0 +1,2 @@
+Name,Appliance,Rack,Rank,IP,MAC,Interface,Network,Default
+stacki-backend-1,backend,0,1,10.168.42.151,08:00:27:E3:DA:98,eth0,private,True
