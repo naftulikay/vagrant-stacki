@@ -1,1 +1,11 @@
 ---
+classes:
+    - profile::stacki
+
+libvirt_networks:
+    pxe:
+        autostart: true
+        forward_mode: nat
+        forward_dev: virbr0
+        ip:
+            - address: 10.10.10.1
