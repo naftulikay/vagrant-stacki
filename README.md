@@ -4,7 +4,9 @@ Vagrant demo of a [Stacki][stacki] frontend and backend running Vagrant and plai
 
 ## Getting Started
 
-Bringing up the frontend with `vagrant up` will give you a Stacki frontend.
+Bringing up the frontend with `vagrant up` will give you a Stacki frontend. You'll need the `rfkrocktk/stacki-3.2-7.x`
+Vagrant box to start the Stacki server, which can be built following the instructions in the
+[vagrant-boxes][vagrant-boxes] repository.
 
 Backend VMs can be created and destroyed with the `./create-backend.sh` and `./destroy-backend.sh` scripts:
 
@@ -49,3 +51,4 @@ $ ./destroy-backend.sh 1
 ```
 
  [stacki]: http://www.stacki.com
+ [vagrant-boxes]: https://github.com/rfkrocktk/vagrant-boxes
